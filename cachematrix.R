@@ -4,29 +4,30 @@
 
 
 ##makeCacheMatrix stores a matrix and its inverse. The inverse
-##is set as NULL by default until its calculated with cachSolve.
+##is set as NULL by default until its calculated with cacheSolve.
 ##It specifies four functioins for setting a value for a
 ##matrix, getting that value, setting a value for an inverse
-##of that particular matrix and getting that inverse.
-#Function takes a matrix (assumed to be square) as input.
+##of that matrix and getting its inverse.
+##Function takes a matrix (assumed to be square) as an input.
 
 makeCacheMatrix <- function(x = matrix()) {
-	#The inverse of matrix x is stored in "inv".	
+	##The inverse of matrix x is stored as a variable "inv".	
 	inv <- NULL
-	#set sets its input as a new value for the matrix
-	#and resets the value of its inverse. 						 
+	##set defines its input as a new value for the matrix
+	##and resets the value of its inverse. 						 
 	set <- function(y) {
-			#"<<-" operator is used to define both the values
+			##"<<-" operator is used to define both the values
 			##for x and inv in the parent enviroment of the 
-			#function where they're originally defined.		
+			##function "set".		
 			x <<- y
 			inv <<- NULL
 	}
 	##get returns the matrix.	
 	get <- function() x
 
-	#setinv sets a value for the inverse in
-	#makeCacheMatrix using the "<<-" operator.
+	##setinv sets a value for the inverse in
+	##makeCacheMatrix (its parent enviroment)
+	## using the "<<-" operator.
 	setinv <- function(inverse) inv <<- inverse
 
 	##getinv retuns user the inverse of matrix x.
@@ -41,7 +42,7 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ##Function cacheSolve solves the inverse for the matrix given
 ##to the makeCacheMatrix function using the functions specified
-##in makeCacheMatrix. The input of cacheSolve is a list created
+##in makeCacheMatrix. The input for cacheSolve is a list created
 ##by makeCacheMatrix.
 
 cacheSolve <- function(x, ...) {
@@ -52,7 +53,9 @@ cacheSolve <- function(x, ...) {
       inv <- x$getinv()
 
 	##If the value of inverse (inv) is not default (null)
-	##its value is returned.
+	##it can be assumed that its value is already calculated
+	##and no recalculation is needed. Therefore the existing
+	##value is returned. 
 	if(!is.null(inv)) {
 		  message("getting cached data")
 		  return(inv)
@@ -61,7 +64,7 @@ cacheSolve <- function(x, ...) {
 	##If the value of the inverse is default (not calculated)
 	##the function "get" inside makeCacheMatrix is called by
 	##subsetting the list x created in makeCacheMatrix 
-	##to get the stored value of a matrix.
+	##to get the stored value of the matrix.
 	data <- x$get()
 
 	##The inverse for this is calculated using function solve.
